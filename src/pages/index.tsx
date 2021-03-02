@@ -9,35 +9,50 @@ import { ChallengeBox } from "../components/ChallengeBox";
 
 import styles from '../styles/pages/Home.module.css'
 import { CountdownProvider } from "../contexts/CountdownContext";
+import { ChallengesProvider } from '../contexts/ChallengeContexts';
+import { ReactNode } from 'react';
+import { LevelUpModal } from '../components/levelUpModal';
 
+interface HomeProps {
+  children: ReactNode
+  level: number
+  currentExperience: number
+  challengesCompleted: number
+}
 
-export default function Home(props) {
+export default function Home(props: HomeProps) {
 
   console.log(props) // views props get from the client-side
 
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Inicio | Move.it</title>
-      </Head>
+    <ChallengesProvider 
+      level={props.level} 
+      currentExperience={props.currentExperience} 
+      challengesCompleted={props.challengesCompleted}
+    >
+      <div className={styles.container}>
+        <Head>
+          <title>Inicio | Move.it</title>
+        </Head>
 
 
-      <ExperienceBar />
-      
-      <CountdownProvider>
-        <section>
-          <div className={styles.leftContainer}>
-            <Profile />
-            <CompletedChallenges />
-            <Countdown />
-          </div>
-          <div className={styles.rightContainer}>
-            <ChallengeBox />
-          </div>
-        </section>
-      </CountdownProvider>
-      
-    </div>
+        <ExperienceBar />
+        
+        <CountdownProvider>
+          <section>
+            <div className={styles.leftContainer}>
+              <Profile />
+              <CompletedChallenges />
+              <Countdown />
+            </div>
+            <div className={styles.rightContainer}>
+              <ChallengeBox />
+            </div>
+          </section>
+        </CountdownProvider>
+        
+      </div>
+    </ChallengesProvider>
   )
 }
 
@@ -48,9 +63,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => { // be
 
   return {
     props: {
-      level,
-      currentExperience,
-      challengesCompleted
+      level: Number(level),
+      currentExperience: Number(currentExperience),
+      challengesCompleted: Number(challengesCompleted)
     }
   }
 }
