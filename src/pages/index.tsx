@@ -22,7 +22,7 @@ interface HomeProps {
 
 export default function Home(props: HomeProps) {
 
-  console.log(props) // views props get from the client-side
+  // console.log(props) // views props get from the client-side
 
   return (
     <ChallengesProvider 
